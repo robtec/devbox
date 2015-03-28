@@ -19,6 +19,7 @@ RUN apt-get install -y \
     mercurial \
     git-core \
     nodejs-legacy \
+    locales \
     golang 
 
 # dev user configuration
@@ -26,6 +27,16 @@ RUN useradd dev
 RUN echo "ALL            ALL = (ALL) NOPASSWD: ALL" >> /etc/sudoers
 WORKDIR /home/dev
 ENV HOME /home/dev
+
+# locale configuration
+RUN cp /usr/share/zoneinfo/Europe/Dublin /etc/localtime && \
+    echo "en_IE.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen && \
+    /usr/sbin/update-locale LANG=en_IE.UTF-8 && \
+    dpkg-reconfigure locales 
+ENV LC_ALL en_IE.UTF-8
+ENV LANG en_IE.UTF-8
+ENV LANGUAGE en_IE.UTF-8
 
 # dotfiles
 RUN git clone https://github.com/tombee/dotfiles /home/dev/.dotfiles
