@@ -74,6 +74,11 @@ RUN npm install -g bower
 RUN wget https://get.docker.io/builds/Linux/x86_64/docker-latest -O /usr/local/bin/docker && \
     chmod +x /usr/local/bin/docker
 
+# setup vim
+RUN sed -i 's/^colorscheme.*//g' $HOME/.dotfiles/vimrc && \
+    vim +PluginInstall +qall > /dev/null 2>&1 && \
+    echo "colorscheme solarized" >> /home/dev/.vimrc 
+
 RUN chown -R dev:dev $HOME && \
     groupadd -g 999 vboxsf && \
     groupadd -g 1002 docker && \
