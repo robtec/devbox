@@ -22,9 +22,6 @@ RUN apt-get install -y \
     locales \
     golang 
 
-# dev user configuration
-RUN useradd dev
-RUN echo "ALL            ALL = (ALL) NOPASSWD: ALL" >> /etc/sudoers
 WORKDIR /home/dev
 ENV HOME /home/dev
 
@@ -55,7 +52,7 @@ RUN (cd /tmp && wget http://fishshell.com/files/${FISH_VERSION}/fish-${FISH_VERS
     make install && \
     rm /tmp/fish-${FISH_VERSION}.tar.gz && \
     echo '/usr/local/bin/fish' | tee -a /etc/shells && \
-    chsh -s /usr/local/bin/fish dev)
+    chsh -s /usr/local/bin/fish root)
 
 # go
 RUN wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz -O /tmp/go.tar.gz && \
@@ -79,11 +76,4 @@ RUN sed -i 's/^colorscheme.*//g' $HOME/.dotfiles/vimrc && \
     vim +PluginInstall +qall > /dev/null 2>&1 && \
     echo "colorscheme solarized" >> /home/dev/.vimrc 
 
-RUN chown -R dev:dev $HOME && \
-    groupadd -g 999 vboxsf && \
-    groupadd -g 1002 docker && \
-    usermod -aG vboxsf dev && \
-    usermod -aG docker dev
-VOLUME /home/dev
-USER dev
 CMD ["/usr/local/bin/fish"]
