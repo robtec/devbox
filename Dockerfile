@@ -18,6 +18,7 @@ RUN apt-get install -y \
     vim \
     mercurial \
     git-core \
+    nodejs-legacy \
     golang 
 
 # dev user configuration
@@ -53,6 +54,10 @@ ENV GOPATH $HOME/dev/gocode
 ENV PATH /usr/local/go/bin:$GOPATH/bin:$PATH
 RUN go get github.com/tools/godep && \
     go get code.google.com/p/go.tools/cmd/present
+
+# npm & bower
+RUN curl http://npmjs.org/install.sh -L -o -| sh
+RUN npm install -g bower
 
 # latest docker binary
 RUN wget https://get.docker.io/builds/Linux/x86_64/docker-latest -O /usr/local/bin/docker && \
