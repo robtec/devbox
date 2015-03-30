@@ -3,6 +3,7 @@ MAINTAINER Tom Barlow <tomwbarlow@gmail.com>
 
 ENV FISH_VERSION 2.1.2
 ENV GO_VERSION 1.3.3
+ENV DOTFILES_REPO https://github.com/tombee/dotfiles
 
 RUN apt-get update
 ENV DEBIAN_FRONTEND noninteractive
@@ -36,7 +37,7 @@ ENV LANG en_IE.UTF-8
 ENV LANGUAGE en_IE.UTF-8
 
 # dotfiles
-RUN git clone https://github.com/tombee/dotfiles /home/dev/.dotfiles
+RUN git clone $DOTFILES_REPO /home/dev/.dotfiles
 RUN cd /home/dev/.dotfiles && git submodule init && git submodule update && cd /home/dev
 
 # Install and run rcm
